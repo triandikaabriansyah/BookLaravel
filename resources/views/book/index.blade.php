@@ -8,6 +8,12 @@
     <div class="col-10">
         <h1 class="mt-3">Daftar Buku</h1>
 
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -16,7 +22,7 @@
                     <th scope="col">Author</th>    
                     <th scope="col">Description</th>                
                     <th scope="col">Publisher</th>      
-                    <th scope="cok">Aksi</th>                              
+                    <th scope="col">Aksi</th>                              
                 </tr>
             </thead>
             <tbody>
@@ -28,8 +34,12 @@
                     <td>{{ $bk->description }}</td>
                     <td>{{ $bk->publisher }}</td>
                     <td>
-                        <a href="" class="badge badge-success">edit</a>
-                        <a href="" class="badge badge-danger">delete</a>
+                        <a href="book/{{ $bk->id }}/edit" class="badge badge-success">edit</a>
+                        <form action="/book/{{ $bk->id }}" method="post" class="d-inline">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="badge badge-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

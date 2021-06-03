@@ -21,14 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'PagesController@home');
 Route::get('/about', 'PagesController@about');
 
-Route::get('/book', 'SiswaController@index');
+Route::resource('book', 'BookController');
 
 // Books
 // Route::get('/books', 'BooksController@index');
 // Route::get('/books/create', 'BooksController@create');
 // Route::get('/books/{book}', 'BooksController@show');
 // Route::post('/books', 'BooksController@store');
-// Route::delete('/books/{book}', 'BooksController@destroy');
 // Route::get('/books/{book}/edit', 'BooksController@edit');
 // Route::patch('books/{book}', 'BooksController@update');
 Route::resource('books', 'BooksController');

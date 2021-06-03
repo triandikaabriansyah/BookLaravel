@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
 use App\Book;
+use Illuminate\Http\Request;
 
-class SiswaController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +14,8 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $book = Book::all();
-        return view('book.index', ['book' => $book]);
+        $books = Book::all();
+        return view('book.index', ['book' => $books]);
     }
 
     /**
@@ -58,9 +56,9 @@ class SiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
-        //
+        return view('book.edit', compact('book'));
     }
 
     /**
@@ -70,19 +68,34 @@ class SiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
-        //
-    }
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'description' => 'required',
+            'publisher' => 'required'
+        ]);
 
+        Book::where('id', $book->id)
+            ->update([
+                'title' => $request->title,
+                'author' => $request->author,
+                'description' =>  $request->description,
+                'publisher' => $request->publisher
+            ]);
+            return redirect('/book')->with('status', 'Data Berhasil Di Ubah!');
+    }
+   
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        //
+        Book::destroy($book->id);
+        return redirect('/book')->with('status', 'Data Buku Berhasil dihapus!');
     }
 }
